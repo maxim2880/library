@@ -31,10 +31,10 @@ class Book(DatesModelMixin):
         ordering = ['created_at']
 
     name = models.CharField(verbose_name='Имя', max_length=40)
-    description = models.CharField(verbose_name='Имя', max_length=1000)
+    description = models.CharField(verbose_name='Описание', max_length=1000, blank=True)
     num_pages = models.PositiveSmallIntegerField(verbose_name="Количество страниц")
-    author = models.ManyToManyField(Author)
-    num_books = models.PositiveSmallIntegerField(verbose_name="Количество книг в библиотеке")
+    author = models.ManyToManyField(Author, blank=False, verbose_name="Автор")
+    num_books = models.PositiveSmallIntegerField(verbose_name="Количество книг в библиотеке", default=1)
 
     def __str__(self):
 
@@ -51,7 +51,7 @@ class Reader(DatesModelMixin):
     surname = models.CharField(verbose_name='Фамилия', max_length=40)
     phone_number = models.PositiveBigIntegerField(verbose_name="Номер телефона")
     status = models.BooleanField(default=True, verbose_name="Статус читателя")
-    books = models.ManyToManyField(Book, blank=True)
+    books = models.ManyToManyField(Book, blank=True, verbose_name="Книги")
 
     def __str__(self):
 

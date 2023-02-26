@@ -8,21 +8,21 @@ class ReaderSerializer(serializers.ModelSerializer):
     book = serializers.SlugRelatedField(queryset=Book.objects.all(), slug_field='name', many=True)
 
     def validate(self, attrs):
-        if len(attrs['book']) > 3:
+        if len(attrs['books']) > 3:
             raise serializers.ValidationError('Не более 3 книг у читателя на руках')
         return attrs
 
     def update(self, instance, validated_data):
-        if validated_data['book']:
-            for book in validated_data['book']:
+        if validated_data['books']:
+            for book in validated_data['books']:
                 if book not in instance.book.all():
                     if book.quantity > 0:
                         book.quantity -= 1
                         book.save()
                     else:
-                        raise ValidationError(f'The book {book.title} is missing')
+                        raise ValidationError(f'Книга {book.title} отсутствует')
             for book in instance.book.all():
-                if book not in validated_data['book']:
+                if book not in validated_data['books']:
                     book.quantity += 1
                     book.save()
 
