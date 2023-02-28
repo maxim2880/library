@@ -5,7 +5,7 @@ from my_library.models import Reader, Book
 
 
 class ReaderSerializer(serializers.ModelSerializer):
-    book = serializers.SlugRelatedField(queryset=Book.objects.all(), slug_field='name', many=True)
+    books = serializers.SlugRelatedField(queryset=Book.objects.all(), slug_field='name', many=True)
 
     def validate(self, attrs):
         if len(attrs['books']) > 3:
